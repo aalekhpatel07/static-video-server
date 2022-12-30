@@ -1,12 +1,12 @@
 [package]
 name = "static-video-server"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Aalekh Patel <aalekh.gwpeck.7998@icloud.com>"]
 description = "A simple static video file server."
 keywords = ["file-server", "video-server"]
 license-file = "LICENSE.md"
-documentation = "https://docs.rs/static-video-server/0.1.0/static-video-server"
+documentation = "https://docs.rs/static-video-server/0.1.1/static-video-server"
 homepage = "https://github.com/aalekhpatel07/static-video-server"
 repository = "https://github.com/aalekhpatel07/static-video-server"
 readme = "README.md"
