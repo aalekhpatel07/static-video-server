@@ -87,10 +87,8 @@ impl VideoPlayerState {
                     let path = entry.path();
                     if path.is_dir() {
                         self.visit_dirs(path)?;
-                    } else {
-                        if self.is_video_file(path.as_path()) {
-                            self.load_video(path);
-                        }
+                    } else if self.is_video_file(path.as_path()) {
+                        self.load_video(path);
                     }
                 }
             }
@@ -179,7 +177,7 @@ pub async fn video_handler(
     Path(video_id): Path<String>, 
     State(state): State<SharedState>,
 ) -> impl IntoResponse {
-    let file_path = state.lock().unwrap().videos.get(&video_id).expect(&format!("Failed to find video with given id: {}", video_id.clone())).clone();
+    let file_path = state.lock().unwrap().videos.get(&video_id).unwrap_or_else(|| panic!("Failed to find video with given id: {}", video_id.clone())).clone();
 
     let path = PathBuf::from(file_path);
     let extension = path.extension().unwrap().to_str().unwrap();
