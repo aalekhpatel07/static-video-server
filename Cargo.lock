@@ -781,6 +781,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "static-video-server"
+version = "0.1.0"
+dependencies = [
+ "askama",
+ "axum",
+ "axum-macros",
+ "clap",
+ "tokio",
+ "tokio-util",
+ "tower",
+ "tower-http",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
 name = "strsim"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1023,22 +1039,6 @@ name = "version_check"
 version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
-
-[[package]]
-name = "video-player"
-version = "0.1.0"
-dependencies = [
- "askama",
- "axum",
- "axum-macros",
- "clap",
- "tokio",
- "tokio-util",
- "tower",
- "tower-http",
- "tracing",
- "tracing-subscriber",
-]
 
 [[package]]
 name = "want"

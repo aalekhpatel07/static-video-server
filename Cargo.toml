@@ -1,7 +1,10 @@
 [package]
-name = "video-player"
+name = "static-video-server"
 version = "0.1.0"
 edition = "2021"
+authors = ["Aalekh Patel <aalekh.gwpeck.7998@icloud.com>"]
+description = "A simple static video file server."
+keywords = ["static file server", "video server"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
