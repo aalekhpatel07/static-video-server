@@ -9,111 +9,18 @@ use axum::{
 };
 use clap::Parser;
 use std::{
-    collections::{HashMap, HashSet},
+    collections::HashMap,
     net::SocketAddr,
     path::PathBuf,
     sync::{
-        atomic::{AtomicUsize, Ordering},
         Arc, Mutex,
     },
 };
 use tokio_util::io::ReaderStream;
 use tracing::{info, log::error};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+use static_video_server::*;
 
-#[derive(Parser, Debug, Clone)]
-pub struct VideoPlayerConfig {
-    #[clap(short, long, default_value = "assets")]
-    pub assets_root: String,
-
-    #[clap(short, long, default_value = "9092")]
-    pub port: u16,
-
-    #[clap(short, long, default_value = "0.0.0.0")]
-    pub host: String,
-}
-
-#[derive(Default)]
-pub struct VideoPlayerState {
-    pub videos: HashMap<String, String>,
-    video_extensions: HashSet<String>,
-    next_index: AtomicUsize,
-    root: Option<String>,
-}
-
-pub type SharedState = Arc<Mutex<VideoPlayerState>>;
-
-impl VideoPlayerState {
-    pub fn new() -> Self {
-        Self {
-            video_extensions: HashSet::from_iter(
-                ["mp4", "av1", "avi", "flv", "heic", "mkv"].map(String::from),
-            ),
-            ..Default::default()
-        }
-    }
-
-    fn advance_index(&mut self) {
-        self.next_index
-            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
-    }
-
-    fn is_video_file<P: AsRef<std::path::Path>>(&self, path: P) -> bool {
-        if let Some(extension) = path.as_ref().extension() {
-            if self.video_extensions.contains(extension.to_str().unwrap()) {
-                return true;
-            }
-        }
-        false
-    }
-
-    pub fn load_videos<P: AsRef<std::path::Path>>(&mut self, root: P) -> std::io::Result<()> {
-        self.visit_dirs(root)
-    }
-
-    pub fn load_video(&mut self, path: PathBuf) {
-        let stored_file_name = path.to_str().unwrap().to_string();
-        let extension = path.extension().unwrap();
-        let server_path = format!(
-            "{}.{}",
-            self.next_index.load(Ordering::SeqCst),
-            extension.to_str().unwrap()
-        );
-        info!("Loading video: {} as {}", stored_file_name, server_path);
-        self.advance_index();
-        self.videos.insert(server_path, stored_file_name);
-    }
-
-    fn visit_dirs<P: AsRef<std::path::Path>>(&mut self, root: P) -> std::io::Result<()> {
-        if root.as_ref().is_dir() {
-            if let Ok(dir) = std::fs::read_dir(root.as_ref()) {
-                for entry in dir {
-                    let entry = entry?;
-                    let path = entry.path();
-                    if path.is_dir() {
-                        self.visit_dirs(path)?;
-                    } else if self.is_video_file(path.as_path()) {
-                        self.load_video(path);
-                    }
-                }
-            }
-        }
-        Ok(())
-    }
-
-    pub fn build(config: &VideoPlayerConfig) -> Self {
-        let mut state = Self::new();
-        state.root = Some(config.assets_root.clone());
-        state.load_videos(state.root.clone().unwrap()).unwrap();
-        state
-    }
-
-    pub fn reload(&mut self) {
-        self.next_index = AtomicUsize::new(0);
-        self.videos.clear();
-        self.load_videos(self.root.clone().unwrap()).unwrap();
-    }
-}
 
 struct HtmlTemplate<T>(T);
 
@@ -218,7 +125,7 @@ pub fn set_up_logging() {
     tracing_subscriber::registry()
         .with(
             tracing_subscriber::EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| "video-player=debug,tower_http=debug".into()),
+                .unwrap_or_else(|_| "static-video-server=info".into()),
         )
         .with(tracing_subscriber::fmt::layer())
         .init();
