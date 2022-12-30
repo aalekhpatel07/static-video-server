@@ -9,6 +9,7 @@ license-file = "LICENSE.md"
 documentation = "https://docs.rs/static-video-server/0.1.0/static-video-server"
 homepage = "https://github.com/aalekhpatel07/static-video-server"
 repository = "https://github.com/aalekhpatel07/static-video-server"
+readme = "README.md"
 
 [dependencies]
 askama = "0.11.1"
