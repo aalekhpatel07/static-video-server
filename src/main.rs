@@ -56,6 +56,10 @@ pub async fn index(State(state): State<SharedState>) -> impl IntoResponse {
     HtmlTemplate(template)
 }
 
+pub async fn health_check() -> impl IntoResponse {
+    (StatusCode::OK, "OK")
+}
+
 pub async fn favicon() -> impl IntoResponse {
     let mut headers = axum::http::HeaderMap::new();
     headers.insert(
@@ -134,6 +138,7 @@ pub async fn main() {
         .route("/video/:video_id", get(video_handler))
         .route("/", get(index))
         .route("/reload", post(reload))
+        .route("/healthcheck", get(health_check))
         .layer(TraceLayer::new_for_http())
         .with_state(state);
 
