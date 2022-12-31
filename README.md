@@ -25,5 +25,5 @@ $ RUST_LOG="info" static-video-server --assets-root "~/Videos" --port 9092 --hos
 # Map your content root directory to container's /assets and bind ports 9092
 # to access the web UI from host.
 
-$ docker run -d --rm -v ~/Videos:/assets -p 9092:9092 static-video-server:latest
+$ docker run -d --rm -v ~/Videos:/assets -p 9092:80 static-video-server:latest
 ```
