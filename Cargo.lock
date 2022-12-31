@@ -782,12 +782,13 @@ dependencies = [
 
 [[package]]
 name = "static-video-server"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "askama",
  "axum",
  "axum-macros",
  "clap",
+ "lazy_static",
  "tokio",
  "tokio-util",
  "tower",

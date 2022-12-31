@@ -1,6 +1,6 @@
 [package]
 name = "static-video-server"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["Aalekh Patel <aalekh.gwpeck.7998@icloud.com>"]
 description = "A simple static video file server."
@@ -16,6 +16,7 @@ askama = "0.11.1"
 axum = "0.6.1"
 axum-macros = "0.3.0"
 clap = { version = "4.0.32", features = ["derive"] }
+lazy_static = "1.4.0"
 tokio = { version = "1.23.0", features = ["full"] }
 tokio-util = "0.7.4"
 tower = { version = "0.4.13", features = ["util"] }

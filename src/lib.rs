@@ -8,6 +8,25 @@ use std::{
     },
 };
 use tracing::log::info;
+use lazy_static::lazy_static;
+
+lazy_static! {
+    pub static ref VIDEO_EXTENSIONS: Vec<String> = vec![
+        "mp4".into(),
+        "avi".into(),
+        "flv".into(),
+        "heic".into(),
+        "mkv".into(),
+        "mov".into(),
+        "mpg".into(),
+        "mpeg".into(),
+        "m4v".into(),
+        "webm".into(),
+        "wmv".into(),
+        "3gp".into()
+    ];
+}
+
 
 
 /// The configuration for the video server.
@@ -34,24 +53,6 @@ pub struct VideoPlayerState {
 }
 
 pub type SharedState = Arc<Mutex<VideoPlayerState>>;
-
-/// The list of video extensions that are supported.
-pub static VIDEO_EXTENSIONS: [&str; 13] = [
-    "mp4",
-    "av1",
-    "avi",
-    "flv",
-    "heic",
-    "mkv",
-    "mov",
-    "mpg",
-    "mpeg",
-    "m4v",
-    "webm",
-    "wmv",
-    "3gp"
-];
-
 
 impl VideoPlayerState {
     /// Create a new video index state.

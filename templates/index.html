@@ -16,8 +16,23 @@
     <table style="width: 100%;">
     {% for (path, file) in videos %}
         <tr style="width: 100%;">
-            <td><a href="/{{ path }}" style="width: 20%">{{ path }}</a></td>
-            <td>{{ file }}</td>
+            <td><a href="/video/{{ path }}">Download</a></td>
+            <td>{{ file.file_name().unwrap().to_str().unwrap() }}</td>
+            <td>
+                <video 
+                    title="{{ file.to_string_lossy() }}" 
+                    width="320" 
+                    height="240" 
+                    controls 
+                    loading="lazy" 
+                    autobuffer
+                    playsinline
+                    preload="metadata"
+                    controlList="nodownload"
+                >
+                    <source src="/video/{{ path }}">
+                </video>
+            </td>
         </tr>
     {% endfor %}
     </table>
